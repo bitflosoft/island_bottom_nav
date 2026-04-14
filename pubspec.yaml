@@ -1,6 +1,6 @@
 name: island_bottom_nav
 description: iOS island-style floating bottom navigation bar for Flutter, with a composable app shell and right-aligned island FAB.
-version: 0.1.0+1
+version: 0.1.0
 repository: https://github.com/bitflosoft/island_bottom_nav
 
 environment:
