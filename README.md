@@ -98,7 +98,7 @@ Key options:
 
 ## Docs
 
-- `docs/island_app_shell.md` contains detailed behavior and configuration notes.
+- `doc/island_app_shell.md` contains detailed behavior and configuration notes.
 
 ## Run The Example App
 
