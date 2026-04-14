@@ -1,0 +1,21 @@
+name: island_bottom_nav_example
+description: Example app for island_bottom_nav.
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  island_bottom_nav:
+    path: ..
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^10.2.0
+
+flutter:
+  uses-material-design: true
