@@ -2,9 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:island_bottom_nav/src/island_bottom_nav_bar.dart';
 import 'package:island_bottom_nav/src/island_fab.dart';
 import 'package:island_bottom_nav/src/island_nav_item.dart';
+import 'package:island_bottom_nav/src/island_nav_theme_data.dart';
 
 /// A configurable app shell that renders an island bottom bar
-/// and right-side FAB
+/// and right-side FAB.
+///
+/// Visual appearance is controlled by [IslandNavThemeData]. When [theme] is
+/// omitted, or individual fields within it are `null`,
+/// [IslandNavThemeData.defaults] fills in values derived from the ambient
+/// [ColorScheme].
+///
+/// ```dart
+/// IslandAppShell(
+///   theme: IslandNavThemeData(
+///     borderColor: Colors.transparent,
+///     selectedColor: Theme.of(context).colorScheme.primary,
+///   ),
+///   body: child,
+///   items: const [...],
+///   currentIndex: _index,
+///   onDestinationSelected: (i) => setState(() => _index = i),
+/// )
+/// ```
 class IslandAppShell extends StatelessWidget {
   /// Creates the island app shell.
   const IslandAppShell({
@@ -12,13 +31,9 @@ class IslandAppShell extends StatelessWidget {
     required this.items,
     required this.currentIndex,
     required this.onDestinationSelected,
+    this.theme,
     this.onFabPressed,
     this.fab,
-    this.fabSpacing = 12,
-    this.bottomPadding = 12,
-    this.horizontalPadding = 16,
-    this.maxIslandWidth = 540,
-    this.navBarHeight = 72,
     this.extendBody = true,
     super.key,
   }) : assert(items.length >= 2, 'At least two island nav items are required.');
@@ -35,32 +50,28 @@ class IslandAppShell extends StatelessWidget {
   /// Called when the user taps a destination.
   final ValueChanged<int> onDestinationSelected;
 
+  /// Visual theme for the nav bar capsule.
+  ///
+  /// When `null`, all values are derived from the ambient [ColorScheme] via
+  /// [IslandNavThemeData.defaults]. Supply a partial theme to override only
+  /// specific properties â€” unset fields still fall back to the defaults.
+  final IslandNavThemeData? theme;
+
   /// Optional callback for the default [IslandFab].
   final VoidCallback? onFabPressed;
 
   /// Optional custom FAB widget. If provided, [onFabPressed] is ignored.
   final Widget? fab;
 
-  /// Gap between nav bar and FAB.
-  final double fabSpacing;
-
-  /// Additional bottom spacing above system insets.
-  final double bottomPadding;
-
-  /// Horizontal page padding for floating controls.
-  final double horizontalPadding;
-
-  /// Max width used by the floating control row.
-  final double maxIslandWidth;
-
-  /// Height of the island navigation bar.
-  final double navBarHeight;
-
   /// Whether body should extend behind floating controls.
   final bool extendBody;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final defaults = IslandNavThemeData.defaults(colorScheme);
+    final resolved = (theme ?? const IslandNavThemeData()).resolve(defaults);
+
     final resolvedFab =
         fab ??
         IslandFab(
@@ -77,12 +88,14 @@ class IslandAppShell extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: SafeArea(
               minimum: EdgeInsets.only(
-                left: horizontalPadding,
-                right: horizontalPadding,
-                bottom: bottomPadding,
+                left: resolved.horizontalPadding ?? 16,
+                right: resolved.horizontalPadding ?? 16,
+                bottom: resolved.bottomPadding ?? 12,
               ),
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: maxIslandWidth),
+                constraints: BoxConstraints(
+                  maxWidth: resolved.maxIslandWidth ?? 540,
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -91,10 +104,18 @@ class IslandAppShell extends StatelessWidget {
                         items: items,
                         currentIndex: currentIndex,
                         onTap: onDestinationSelected,
-                        height: navBarHeight,
+                        height: resolved.navBarHeight ?? 64,
+                        backgroundColor: resolved.backgroundColor,
+                        borderColor: resolved.borderColor,
+                        selectedColor: resolved.selectedColor,
+                        unselectedColor: resolved.unselectedColor,
+                        labelStyle: resolved.labelStyle,
+                        selectedLabelStyle: resolved.selectedLabelStyle,
+                        elevation: resolved.elevation ?? 8,
+                        borderRadius: resolved.borderRadius ?? 36,
                       ),
                     ),
-                    SizedBox(width: fabSpacing),
+                    SizedBox(width: resolved.fabSpacing ?? 12),
                     resolvedFab,
                   ],
                 ),
