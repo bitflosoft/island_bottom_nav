@@ -187,11 +187,13 @@ class _IslandDemoPageState extends State<_IslandDemoPage> {
         },
         icon: const Icon(Icons.search_rounded),
       ),
-      maxIslandWidth: 720,
-      navBarHeight: 76,
-      fabSpacing: 10,
-      horizontalPadding: 20,
-      bottomPadding: 10,
+      theme: const IslandNavThemeData(
+        maxIslandWidth: 720,
+        navBarHeight: 76,
+        fabSpacing: 10,
+        horizontalPadding: 20,
+        bottomPadding: 10,
+      ),
     );
   }
 }

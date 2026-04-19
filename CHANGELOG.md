@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.0
+
+### Added
+- `IslandNavThemeData`: a dedicated theme class that centralises all visual and
+  layout configuration for the island shell. Supports `copyWith`, `resolve`,
+  `lerp`, `==`/`hashCode`, and `debugFillProperties`.
+- `IslandNavThemeData.defaults(colorScheme)`: derives a fully-resolved theme
+  from the ambient `ColorScheme`, used as the automatic fallback when `theme`
+  is omitted or fields are null.
+- `IslandAppShell.theme` parameter — supply an `IslandNavThemeData` to override
+  any subset of properties; unset fields fall back to `defaults` automatically.
+
+### Changed ⚠ Breaking
+- Removed individual `IslandAppShell` constructor parameters:
+  `navBarHeight`, `fabSpacing`, `bottomPadding`, `horizontalPadding`,
+  `maxIslandWidth`, `navBackgroundColor`, `navBorderColor`, `navSelectedColor`,
+  `navUnselectedColor`, `navLabelStyle`, `navSelectedLabelStyle`,
+  `navElevation`, `navBorderRadius`.  
+  **Migration:** pass these values via `theme: IslandNavThemeData(...)` instead.
+
 ## 0.1.0
 
 ### Added

@@ -70,14 +70,54 @@ class _HomeShellState extends State<HomeShell> {
 ## Building Blocks
 
 ### `IslandAppShell`
-High-level shell with nav + right-side FAB.
+High-level shell with nav + right-side FAB. All visual and layout properties
+are controlled via a single `theme: IslandNavThemeData(...)` parameter.
 
-Key options:
+```dart
+IslandAppShell(
+  theme: IslandNavThemeData(
+    backgroundColor: Colors.black.withValues(alpha: 0.85),
+    borderColor: Colors.transparent,
+    selectedColor: Colors.teal,
+    navBarHeight: 64,
+    fabSpacing: 10,
+    horizontalPadding: 20,
+    bottomPadding: 12,
+    maxIslandWidth: 540,
+  ),
+  body: child,
+  items: items,
+  currentIndex: index,
+  onDestinationSelected: (i) => setState(() => index = i),
+)
+```
+
+When `theme` is omitted (or individual fields are `null`), values are derived
+automatically from the ambient `ColorScheme` via `IslandNavThemeData.defaults`.
+
+Other shell options:
 - `fab`: provide your own custom island FAB widget.
-- `fabSpacing`: spacing between nav and FAB.
-- `maxIslandWidth`: max width for the floating control cluster.
-- `horizontalPadding` and `bottomPadding`: tune placement above safe areas.
-- `navBarHeight`: tune nav capsule size.
+- `onFabPressed`: callback used by the default `IslandFab`.
+- `extendBody`: whether the body renders behind the floating bar (default: `true`).
+
+### `IslandNavThemeData`
+All appearance and layout settings in one place. Every field is nullable —
+supply only the values you want to override.
+
+| Property | Default | Description |
+|---|---|---|
+| `backgroundColor` | surface @ 84 % | Capsule fill |
+| `borderColor` | outline @ 45 % | Use `Colors.transparent` to hide |
+| `selectedColor` | `primary` | Active icon + label |
+| `unselectedColor` | onSurface @ 55 % | Inactive icon + label |
+| `labelStyle` / `selectedLabelStyle` | 12 sp | Label text styles |
+| `elevation` | `8` | Capsule shadow |
+| `borderRadius` | `36` | Capsule corner radius |
+| `navBarHeight` | `64` | Bar height |
+| `fabSpacing` | `12` | Gap between bar and FAB |
+| `bottomPadding` | `12` | Space above system insets |
+| `horizontalPadding` | `16` | Left/right padding of the control row |
+| `maxIslandWidth` | `540` | Max width of the nav+FAB row |
 
 ### `IslandBottomNavBar`
 Standalone floating nav when you already have your own page shell.
