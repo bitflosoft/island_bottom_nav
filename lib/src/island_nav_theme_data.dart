@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:island_bottom_nav/src/island_nav_label_behavior.dart';
 
 /// Defines the visual theme for the island nav bar and its host shell.
 ///
@@ -42,6 +43,7 @@ class IslandNavThemeData with Diagnosticable {
     this.bottomPadding,
     this.horizontalPadding,
     this.maxIslandWidth,
+    this.labelBehavior,
   });
 
   /// Derives a fully-specified theme from [colorScheme].
@@ -71,6 +73,7 @@ class IslandNavThemeData with Diagnosticable {
       bottomPadding: 12,
       horizontalPadding: 16,
       maxIslandWidth: 540,
+      labelBehavior: IslandNavLabelBehavior.alwaysShow,
     );
   }
 
@@ -119,6 +122,11 @@ class IslandNavThemeData with Diagnosticable {
   /// Maximum width of the floating control row. Defaults to `540`.
   final double? maxIslandWidth;
 
+  /// Controls when labels are shown beneath destination icons.
+  ///
+  /// Defaults to [IslandNavLabelBehavior.alwaysShow].
+  final IslandNavLabelBehavior? labelBehavior;
+
   // ── Helpers ────────────────────────────────────────────────────────────────
 
   @override
@@ -136,6 +144,7 @@ class IslandNavThemeData with Diagnosticable {
     bottomPadding,
     horizontalPadding,
     maxIslandWidth,
+    labelBehavior,
   );
 
   // ── Object ─────────────────────────────────────────────────────────────────
@@ -156,7 +165,8 @@ class IslandNavThemeData with Diagnosticable {
         other.fabSpacing == fabSpacing &&
         other.bottomPadding == bottomPadding &&
         other.horizontalPadding == horizontalPadding &&
-        other.maxIslandWidth == maxIslandWidth;
+        other.maxIslandWidth == maxIslandWidth &&
+        other.labelBehavior == labelBehavior;
   }
 
   /// Returns a copy of this theme with the given fields replaced.
@@ -174,6 +184,7 @@ class IslandNavThemeData with Diagnosticable {
     double? bottomPadding,
     double? horizontalPadding,
     double? maxIslandWidth,
+    IslandNavLabelBehavior? labelBehavior,
   }) {
     return IslandNavThemeData(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -189,6 +200,7 @@ class IslandNavThemeData with Diagnosticable {
       bottomPadding: bottomPadding ?? this.bottomPadding,
       horizontalPadding: horizontalPadding ?? this.horizontalPadding,
       maxIslandWidth: maxIslandWidth ?? this.maxIslandWidth,
+      labelBehavior: labelBehavior ?? this.labelBehavior,
     );
   }
 
@@ -213,7 +225,10 @@ class IslandNavThemeData with Diagnosticable {
       ..add(DoubleProperty('fabSpacing', fabSpacing))
       ..add(DoubleProperty('bottomPadding', bottomPadding))
       ..add(DoubleProperty('horizontalPadding', horizontalPadding))
-      ..add(DoubleProperty('maxIslandWidth', maxIslandWidth));
+      ..add(DoubleProperty('maxIslandWidth', maxIslandWidth))
+      ..add(
+        EnumProperty<IslandNavLabelBehavior>('labelBehavior', labelBehavior),
+      );
   }
 
   /// Returns a new theme where every `null` field in `this` is filled with
@@ -236,6 +251,7 @@ class IslandNavThemeData with Diagnosticable {
       bottomPadding: bottomPadding ?? defaults.bottomPadding,
       horizontalPadding: horizontalPadding ?? defaults.horizontalPadding,
       maxIslandWidth: maxIslandWidth ?? defaults.maxIslandWidth,
+      labelBehavior: labelBehavior ?? defaults.labelBehavior,
     );
   }
 
@@ -271,6 +287,7 @@ class IslandNavThemeData with Diagnosticable {
         t,
       ),
       maxIslandWidth: _lerpDouble(a?.maxIslandWidth, b?.maxIslandWidth, t),
+      labelBehavior: t < 0.5 ? a?.labelBehavior : b?.labelBehavior,
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:island_bottom_nav/src/island_bottom_nav_bar.dart';
 import 'package:island_bottom_nav/src/island_fab.dart';
 import 'package:island_bottom_nav/src/island_nav_item.dart';
+import 'package:island_bottom_nav/src/island_nav_label_behavior.dart';
 import 'package:island_bottom_nav/src/island_nav_theme_data.dart';
 
 /// A configurable app shell that renders an island bottom bar
@@ -113,6 +114,9 @@ class IslandAppShell extends StatelessWidget {
                         selectedLabelStyle: resolved.selectedLabelStyle,
                         elevation: resolved.elevation ?? 8,
                         borderRadius: resolved.borderRadius ?? 36,
+                        labelBehavior:
+                            resolved.labelBehavior ??
+                            IslandNavLabelBehavior.alwaysShow,
                       ),
                     ),
                     SizedBox(width: resolved.fabSpacing ?? 12),

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:island_bottom_nav/src/island_nav_item.dart';
+import 'package:island_bottom_nav/src/island_nav_label_behavior.dart';
 
 /// A floating, rounded navigation bar inspired by iOS island-style navigation.
 class IslandBottomNavBar extends StatelessWidget {
@@ -20,6 +21,7 @@ class IslandBottomNavBar extends StatelessWidget {
     this.labelStyle,
     this.selectedLabelStyle,
     this.elevation = 8,
+    this.labelBehavior = IslandNavLabelBehavior.alwaysShow,
     super.key,
   }) : assert(items.length >= 2, 'At least two island nav items are required.'),
        assert(currentIndex >= 0, 'currentIndex must be >= 0.'),
@@ -66,6 +68,11 @@ class IslandBottomNavBar extends StatelessWidget {
 
   /// Shadow elevation.
   final double elevation;
+
+  /// Controls when labels are shown beneath destination icons.
+  ///
+  /// Defaults to [IslandNavLabelBehavior.alwaysShow].
+  final IslandNavLabelBehavior labelBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +121,7 @@ class IslandBottomNavBar extends StatelessWidget {
                       unselectedColor: unselected,
                       labelStyle: resolvedLabelStyle,
                       selectedLabelStyle: selectedLabelStyle,
+                      labelBehavior: labelBehavior,
                       onTap: () => onTap(index),
                     );
                   }),
@@ -135,6 +143,7 @@ class _IslandDestination extends StatelessWidget {
     required this.unselectedColor,
     required this.labelStyle,
     required this.selectedLabelStyle,
+    required this.labelBehavior,
     required this.onTap,
   });
 
@@ -144,11 +153,17 @@ class _IslandDestination extends StatelessWidget {
   final Color unselectedColor;
   final TextStyle labelStyle;
   final TextStyle? selectedLabelStyle;
+  final IslandNavLabelBehavior labelBehavior;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final foregroundColor = selected ? selectedColor : unselectedColor;
+    final showLabel = switch (labelBehavior) {
+      IslandNavLabelBehavior.alwaysShow => true,
+      IslandNavLabelBehavior.alwaysHide => false,
+      IslandNavLabelBehavior.onlyShowSelected => selected,
+    };
     final label = Text(
       item.label,
       maxLines: 1,
@@ -187,18 +202,19 @@ class _IslandDestination extends StatelessWidget {
                       : item.icon,
                 ),
                 const SizedBox(height: 3),
-                AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 220),
-                  style:
-                      (selected ? selectedLabelStyle : null) ??
-                      labelStyle.copyWith(
-                        color: foregroundColor,
-                        fontWeight: selected
-                            ? FontWeight.w700
-                            : FontWeight.w500,
-                      ),
-                  child: label,
-                ),
+                if (showLabel)
+                  AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 220),
+                    style:
+                        (selected ? selectedLabelStyle : null) ??
+                        labelStyle.copyWith(
+                          color: foregroundColor,
+                          fontWeight: selected
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                        ),
+                    child: label,
+                  ),
               ],
             ),
           ),
