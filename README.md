@@ -111,6 +111,7 @@ supply only the values you want to override.
 | `selectedColor` | `primary` | Active icon + label |
 | `unselectedColor` | onSurface @ 55 % | Inactive icon + label |
 | `labelStyle` / `selectedLabelStyle` | 12 sp | Label text styles |
+| `labelBehavior` | `alwaysShow` | When to show labels (`alwaysShow`, `alwaysHide`, `onlyShowSelected`) |
 | `elevation` | `8` | Capsule shadow |
 | `borderRadius` | `36` | Capsule corner radius |
 | `navBarHeight` | `64` | Bar height |
@@ -126,6 +127,7 @@ Key options:
 - `backgroundColor`, `borderColor`, `selectedColor`, `unselectedColor`
 - `height`, `borderRadius`, `padding`, `elevation`
 - `labelStyle`, `selectedLabelStyle`
+- `labelBehavior`
 
 ### `IslandFab`
 Standalone island action button.

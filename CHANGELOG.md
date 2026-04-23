@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.1
+
+### Added
+- `IslandNavLabelBehavior` enum — controls when destination labels are rendered:
+  - `alwaysShow` (default) — labels always visible.
+  - `alwaysHide` — icons only, labels never rendered.
+  - `onlyShowSelected` — label shown only for the active destination.
+- `IslandNavThemeData.labelBehavior` field — set once in the theme to apply
+  the chosen behaviour across all destinations.
+- `IslandBottomNavBar.labelBehavior` parameter — for standalone bar usage
+  without `IslandAppShell`.
+
 ## 0.2.0
 
 ### Added
