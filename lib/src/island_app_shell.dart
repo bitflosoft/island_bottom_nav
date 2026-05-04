@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:island_bottom_nav/src/island_bottom_nav_bar.dart';
 import 'package:island_bottom_nav/src/island_fab.dart';
@@ -17,7 +18,9 @@ import 'package:island_bottom_nav/src/island_nav_theme_data.dart';
 /// IslandAppShell(
 ///   theme: IslandNavThemeData(
 ///     borderColor: Colors.transparent,
-///     selectedColor: Theme.of(context).colorScheme.primary,
+///     selectedIconColor: Theme.of(context).colorScheme.primary,
+///     selectedBgColor:
+///         Theme.of(context).colorScheme.primary.withValues(alpha: 0.13),
 ///   ),
 ///   body: child,
 ///   items: const [...],
@@ -35,7 +38,19 @@ class IslandAppShell extends StatelessWidget {
     this.theme,
     this.onFabPressed,
     this.fab,
+    this.appBar,
+    this.drawer,
+    this.onDrawerChanged,
+    this.endDrawer,
+    this.onEndDrawerChanged,
+    this.bottomSheet,
+    this.backgroundColor,
+    this.resizeToAvoidBottomInset,
+    this.primary = true,
+    this.drawerDragStartBehavior = DragStartBehavior.start,
+    this.extendBodyBehindAppBar = false,
     this.extendBody = true,
+    this.restorationId,
     super.key,
   }) : assert(items.length >= 2, 'At least two island nav items are required.');
 
@@ -64,8 +79,45 @@ class IslandAppShell extends StatelessWidget {
   /// Optional custom FAB widget. If provided, [onFabPressed] is ignored.
   final Widget? fab;
 
+  /// An app bar to display at the top of the scaffold.
+  final PreferredSizeWidget? appBar;
+
+  /// A panel displayed to the side of the [body].
+  final Widget? drawer;
+
+  /// Called when the user opens or closes the drawer.
+  final DrawerCallback? onDrawerChanged;
+
+  /// A panel displayed to the side of the [body], on the opposite side from
+  /// [drawer].
+  final Widget? endDrawer;
+
+  /// Called when the user opens or closes the end drawer.
+  final DrawerCallback? onEndDrawerChanged;
+
+  /// A persistent bottom sheet shown above the bottom navigation bar.
+  final Widget? bottomSheet;
+
+  /// The color of the [Material] widget that underlies the entire Scaffold.
+  final Color? backgroundColor;
+
+  /// Whether the body should size itself to avoid the window's bottom inset.
+  final bool? resizeToAvoidBottomInset;
+
+  /// Whether this scaffold is being displayed at the top of the screen.
+  final bool primary;
+
+  /// Determines the way that drag start behavior is handled.
+  final DragStartBehavior drawerDragStartBehavior;
+
+  /// Whether to extend body behind the app bar.
+  final bool extendBodyBehindAppBar;
+
   /// Whether body should extend behind floating controls.
   final bool extendBody;
+
+  /// Restoration ID to save and restore the state of the Scaffold.
+  final String? restorationId;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +132,19 @@ class IslandAppShell extends StatelessWidget {
         );
 
     return Scaffold(
+      appBar: appBar,
+      drawer: drawer,
+      onDrawerChanged: onDrawerChanged,
+      endDrawer: endDrawer,
+      onEndDrawerChanged: onEndDrawerChanged,
+      bottomSheet: bottomSheet,
+      backgroundColor: backgroundColor,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      primary: primary,
+      drawerDragStartBehavior: drawerDragStartBehavior,
+      extendBodyBehindAppBar: extendBodyBehindAppBar,
       extendBody: extendBody,
+      restorationId: restorationId,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -108,8 +172,10 @@ class IslandAppShell extends StatelessWidget {
                         height: resolved.navBarHeight ?? 64,
                         backgroundColor: resolved.backgroundColor,
                         borderColor: resolved.borderColor,
-                        selectedColor: resolved.selectedColor,
-                        unselectedColor: resolved.unselectedColor,
+                        selectedIconColor: resolved.selectedIconColor,
+                        unselectedIconColor: resolved.unselectedIconColor,
+                        selectedBgColor: resolved.selectedBgColor,
+                        unselectedBgColor: resolved.unselectedBgColor,
                         labelStyle: resolved.labelStyle,
                         selectedLabelStyle: resolved.selectedLabelStyle,
                         elevation: resolved.elevation ?? 8,

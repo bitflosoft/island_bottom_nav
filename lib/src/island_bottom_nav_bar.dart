@@ -16,8 +16,10 @@ class IslandBottomNavBar extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.backgroundColor,
     this.borderColor,
-    this.selectedColor,
-    this.unselectedColor,
+    this.selectedIconColor,
+    this.unselectedIconColor,
+    this.selectedBgColor,
+    this.unselectedBgColor,
     this.labelStyle,
     this.selectedLabelStyle,
     this.elevation = 8,
@@ -54,11 +56,17 @@ class IslandBottomNavBar extends StatelessWidget {
   /// Border color of the capsule.
   final Color? borderColor;
 
-  /// Color used by selected icon and label.
-  final Color? selectedColor;
+  /// Color used by selected icon.
+  final Color? selectedIconColor;
 
-  /// Color used by unselected icon and label.
-  final Color? unselectedColor;
+  /// Color used by unselected icon.
+  final Color? unselectedIconColor;
+
+  /// Background color for selected item.
+  final Color? selectedBgColor;
+
+  /// Background color for unselected item.
+  final Color? unselectedBgColor;
 
   /// Base text style for labels.
   final TextStyle? labelStyle;
@@ -77,9 +85,13 @@ class IslandBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final selected = selectedColor ?? theme.colorScheme.onSurface;
-    final unselected =
-        unselectedColor ?? theme.colorScheme.onSurface.withValues(alpha: 0.65);
+    final selectedIcon = selectedIconColor ?? theme.colorScheme.onSurface;
+    final unselectedIcon =
+        unselectedIconColor ??
+        theme.colorScheme.onSurface.withValues(alpha: 0.65);
+    final selectedBg =
+        selectedBgColor ?? theme.colorScheme.primary.withValues(alpha: 0.13);
+    final unselectedBg = unselectedBgColor ?? Colors.transparent;
     final resolvedLabelStyle =
         labelStyle ??
         theme.textTheme.labelMedium ??
@@ -117,8 +129,10 @@ class IslandBottomNavBar extends StatelessWidget {
                     return _IslandDestination(
                       item: item,
                       selected: isSelected,
-                      selectedColor: selected,
-                      unselectedColor: unselected,
+                      selectedIconColor: selectedIcon,
+                      unselectedIconColor: unselectedIcon,
+                      selectedBgColor: selectedBg,
+                      unselectedBgColor: unselectedBg,
                       labelStyle: resolvedLabelStyle,
                       selectedLabelStyle: selectedLabelStyle,
                       labelBehavior: labelBehavior,
@@ -139,8 +153,10 @@ class _IslandDestination extends StatelessWidget {
   const _IslandDestination({
     required this.item,
     required this.selected,
-    required this.selectedColor,
-    required this.unselectedColor,
+    required this.selectedIconColor,
+    required this.unselectedIconColor,
+    required this.selectedBgColor,
+    required this.unselectedBgColor,
     required this.labelStyle,
     required this.selectedLabelStyle,
     required this.labelBehavior,
@@ -149,8 +165,10 @@ class _IslandDestination extends StatelessWidget {
 
   final IslandNavItem item;
   final bool selected;
-  final Color selectedColor;
-  final Color unselectedColor;
+  final Color selectedIconColor;
+  final Color unselectedIconColor;
+  final Color selectedBgColor;
+  final Color unselectedBgColor;
   final TextStyle labelStyle;
   final TextStyle? selectedLabelStyle;
   final IslandNavLabelBehavior labelBehavior;
@@ -158,7 +176,8 @@ class _IslandDestination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foregroundColor = selected ? selectedColor : unselectedColor;
+    final iconColor = selected ? selectedIconColor : unselectedIconColor;
+    final bgColor = selected ? selectedBgColor : unselectedBgColor;
     final showLabel = switch (labelBehavior) {
       IslandNavLabelBehavior.alwaysShow => true,
       IslandNavLabelBehavior.alwaysHide => false,
@@ -183,9 +202,7 @@ class _IslandDestination extends StatelessWidget {
             curve: Curves.easeOutCubic,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
-              color: selected
-                  ? selectedColor.withValues(alpha: 0.13)
-                  : Colors.transparent,
+              color: bgColor,
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
@@ -193,7 +210,7 @@ class _IslandDestination extends StatelessWidget {
               children: [
                 IconTheme(
                   data: IconThemeData(
-                    color: foregroundColor,
+                    color: iconColor,
                     size: 24,
                     weight: selected ? 700 : 400,
                   ),
@@ -208,7 +225,7 @@ class _IslandDestination extends StatelessWidget {
                     style:
                         (selected ? selectedLabelStyle : null) ??
                         labelStyle.copyWith(
-                          color: foregroundColor,
+                          color: iconColor,
                           fontWeight: selected
                               ? FontWeight.w700
                               : FontWeight.w500,

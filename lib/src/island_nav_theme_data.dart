@@ -18,7 +18,8 @@ import 'package:island_bottom_nav/src/island_nav_label_behavior.dart';
 ///   theme: IslandNavThemeData(
 ///     backgroundColor: Colors.black.withOpacity(0.8),
 ///     borderColor: Colors.transparent,
-///     selectedColor: Colors.teal,
+///     selectedIconColor: Colors.teal,
+///     selectedBgColor: Colors.teal.withValues(alpha: 0.13),
 ///   ),
 ///   ...
 /// )
@@ -32,8 +33,10 @@ class IslandNavThemeData with Diagnosticable {
   const IslandNavThemeData({
     this.backgroundColor,
     this.borderColor,
-    this.selectedColor,
-    this.unselectedColor,
+    this.selectedIconColor,
+    this.unselectedIconColor,
+    this.selectedBgColor,
+    this.unselectedBgColor,
     this.labelStyle,
     this.selectedLabelStyle,
     this.elevation,
@@ -54,8 +57,10 @@ class IslandNavThemeData with Diagnosticable {
     return IslandNavThemeData(
       backgroundColor: colorScheme.surface.withValues(alpha: 0.84),
       borderColor: colorScheme.outline.withValues(alpha: 0.45),
-      selectedColor: colorScheme.primary,
-      unselectedColor: colorScheme.onSurface.withValues(alpha: 0.55),
+      selectedIconColor: colorScheme.primary,
+      unselectedIconColor: colorScheme.onSurface.withValues(alpha: 0.55),
+      selectedBgColor: colorScheme.primary.withValues(alpha: 0.13),
+      unselectedBgColor: Colors.transparent,
       labelStyle: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
@@ -87,11 +92,17 @@ class IslandNavThemeData with Diagnosticable {
   /// Set to [Colors.transparent] to hide the border entirely.
   final Color? borderColor;
 
-  /// Color used by the selected icon and label.
-  final Color? selectedColor;
+  /// Color used by the selected icon.
+  final Color? selectedIconColor;
 
-  /// Color used by unselected icons and labels.
-  final Color? unselectedColor;
+  /// Color used by unselected icons.
+  final Color? unselectedIconColor;
+
+  /// Background color for the selected item.
+  final Color? selectedBgColor;
+
+  /// Background color for unselected items.
+  final Color? unselectedBgColor;
 
   /// Base text style applied to all labels.
   final TextStyle? labelStyle;
@@ -133,8 +144,10 @@ class IslandNavThemeData with Diagnosticable {
   int get hashCode => Object.hash(
     backgroundColor,
     borderColor,
-    selectedColor,
-    unselectedColor,
+    selectedIconColor,
+    unselectedIconColor,
+    selectedBgColor,
+    unselectedBgColor,
     labelStyle,
     selectedLabelStyle,
     elevation,
@@ -155,8 +168,10 @@ class IslandNavThemeData with Diagnosticable {
     return other is IslandNavThemeData &&
         other.backgroundColor == backgroundColor &&
         other.borderColor == borderColor &&
-        other.selectedColor == selectedColor &&
-        other.unselectedColor == unselectedColor &&
+        other.selectedIconColor == selectedIconColor &&
+        other.unselectedIconColor == unselectedIconColor &&
+        other.selectedBgColor == selectedBgColor &&
+        other.unselectedBgColor == unselectedBgColor &&
         other.labelStyle == labelStyle &&
         other.selectedLabelStyle == selectedLabelStyle &&
         other.elevation == elevation &&
@@ -173,8 +188,10 @@ class IslandNavThemeData with Diagnosticable {
   IslandNavThemeData copyWith({
     Color? backgroundColor,
     Color? borderColor,
-    Color? selectedColor,
-    Color? unselectedColor,
+    Color? selectedIconColor,
+    Color? unselectedIconColor,
+    Color? selectedBgColor,
+    Color? unselectedBgColor,
     TextStyle? labelStyle,
     TextStyle? selectedLabelStyle,
     double? elevation,
@@ -189,8 +206,10 @@ class IslandNavThemeData with Diagnosticable {
     return IslandNavThemeData(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       borderColor: borderColor ?? this.borderColor,
-      selectedColor: selectedColor ?? this.selectedColor,
-      unselectedColor: unselectedColor ?? this.unselectedColor,
+      selectedIconColor: selectedIconColor ?? this.selectedIconColor,
+      unselectedIconColor: unselectedIconColor ?? this.unselectedIconColor,
+      selectedBgColor: selectedBgColor ?? this.selectedBgColor,
+      unselectedBgColor: unselectedBgColor ?? this.unselectedBgColor,
       labelStyle: labelStyle ?? this.labelStyle,
       selectedLabelStyle: selectedLabelStyle ?? this.selectedLabelStyle,
       elevation: elevation ?? this.elevation,
@@ -210,8 +229,10 @@ class IslandNavThemeData with Diagnosticable {
     properties
       ..add(ColorProperty('backgroundColor', backgroundColor))
       ..add(ColorProperty('borderColor', borderColor))
-      ..add(ColorProperty('selectedColor', selectedColor))
-      ..add(ColorProperty('unselectedColor', unselectedColor))
+      ..add(ColorProperty('selectedIconColor', selectedIconColor))
+      ..add(ColorProperty('unselectedIconColor', unselectedIconColor))
+      ..add(ColorProperty('selectedBgColor', selectedBgColor))
+      ..add(ColorProperty('unselectedBgColor', unselectedBgColor))
       ..add(DiagnosticsProperty<TextStyle>('labelStyle', labelStyle))
       ..add(
         DiagnosticsProperty<TextStyle>(
@@ -240,8 +261,10 @@ class IslandNavThemeData with Diagnosticable {
     return IslandNavThemeData(
       backgroundColor: backgroundColor ?? defaults.backgroundColor,
       borderColor: borderColor ?? defaults.borderColor,
-      selectedColor: selectedColor ?? defaults.selectedColor,
-      unselectedColor: unselectedColor ?? defaults.unselectedColor,
+      selectedIconColor: selectedIconColor ?? defaults.selectedIconColor,
+      unselectedIconColor: unselectedIconColor ?? defaults.unselectedIconColor,
+      selectedBgColor: selectedBgColor ?? defaults.selectedBgColor,
+      unselectedBgColor: unselectedBgColor ?? defaults.unselectedBgColor,
       labelStyle: labelStyle ?? defaults.labelStyle,
       selectedLabelStyle: selectedLabelStyle ?? defaults.selectedLabelStyle,
       elevation: elevation ?? defaults.elevation,
@@ -268,8 +291,13 @@ class IslandNavThemeData with Diagnosticable {
     return IslandNavThemeData(
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       borderColor: Color.lerp(a?.borderColor, b?.borderColor, t),
-      selectedColor: Color.lerp(a?.selectedColor, b?.selectedColor, t),
-      unselectedColor: Color.lerp(a?.unselectedColor, b?.unselectedColor, t),
+      selectedIconColor:
+          Color.lerp(a?.selectedIconColor, b?.selectedIconColor, t),
+      unselectedIconColor:
+          Color.lerp(a?.unselectedIconColor, b?.unselectedIconColor, t),
+      selectedBgColor: Color.lerp(a?.selectedBgColor, b?.selectedBgColor, t),
+      unselectedBgColor:
+          Color.lerp(a?.unselectedBgColor, b?.unselectedBgColor, t),
       labelStyle: TextStyle.lerp(a?.labelStyle, b?.labelStyle, t),
       selectedLabelStyle: TextStyle.lerp(
         a?.selectedLabelStyle,

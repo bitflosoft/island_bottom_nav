@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.3.0
+
+### Added
+- Granular color control in `IslandNavThemeData`:
+  - `selectedIconColor` — color for selected destination icons.
+  - `unselectedIconColor` — color for unselected destination icons.
+  - `selectedBgColor` — background color for the selected item container.
+  - `unselectedBgColor` — background color for unselected item containers.
+- Icon and background colors are now independent, enabling more flexible theming.
+
+### Changed ⚠ Breaking
+- `IslandBottomNavBar` constructor: replaced `selectedColor` and `unselectedColor`
+  parameters with `selectedIconColor`, `unselectedIconColor`, `selectedBgColor`,
+  and `unselectedBgColor` for granular control.
+- `IslandNavThemeData`: replaced `selectedColor` and `unselectedColor` fields
+  with the new four-property system.  
+  **Migration:** use separate icon and background colors instead of a single color.
+
 ## 0.2.1
 
 ### Added
